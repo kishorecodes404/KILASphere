@@ -1,0 +1,37 @@
+{
+  "summary": "Smoke tested backend REST + SSE streaming (gpt-5.6-terra & claude-sonnet-5) and frontend UI (empty state, model selector, chat send/stream, sidebar, imagine toggle, prompt suggestions). All flows work EXCEPT /api/image/generate which returns HTTP 500 due to a serialization bug (asst_doc is mutated by MongoDB insert_one to include ObjectId _id, then returned directly, causing FastAPI jsonable_encoder to fail). This blocks the Imagine feature end-to-end even though the image is actually created in Mongo.",
+  "tested_scope": ["backend", "frontend", "integration"],
+  "passed": [
+    "GET /api/models returns all 4 models with correct provider/support flags",
+    "POST /api/conversations creates conversation; GET /api/conversations lists sorted by updated_at desc",
+    "PATCH /api/conversations/{id} renames; DELETE /api/conversations/{id} deletes conv and its messages (verified GET messages returns [])",
+    "GET /api/conversations/{id}/messages returns messages in order",
+    "POST /api/chat/stream (gpt-5.6-terra): streams 'data: {\"type\":\"delta\"...}' lines followed by a 'done' event; user+assistant messages persisted",
+    "POST /api/chat/stream (claude-sonnet-5): multi-provider streaming works; emits 'title' auto-title event",
+    "Auto-title: New chat conversation title updated to first user message (verified via GET /api/conversations)",
+    "Multi-turn history: sent 'My name is Rex' then 'What is my name?' — assistant reply contains 'Rex' (context retained)",
+    "Frontend empty state: 'Welcome to KILASphere' hero, GPT 5.6 Terra default label, NEW CHAT + HISTORY visible",
+    "Model selector: menu opens with 4 options; switching to Gemini 3.1 Pro updates label",
+    "Chat send flow: typing in chat-input + send-btn streams response and creates a new sidebar conv-item",
+    "Imagine toggle: placeholder changes to 'Describe an image to generate...'",
+    "Prompt suggestions visible in empty state (prompt-suggestion-0)"
+  ],
+  "failed": [
+    {
+      "area": "backend / image generation",
+      "issue": "POST /api/image/generate returns HTTP 500 'Internal Server Error'. Traceback: ValueError: [TypeError(\"'ObjectId' object is not iterable\"), TypeError('vars() argument must have __dict__ attribute')] from fastapi.encoders.jsonable_encoder. Root cause: after `await db.messages.insert_one(asst_doc)` on line 374 of server.py, Motor mutates asst_doc to add a MongoDB `_id` ObjectId. The endpoint then does `return {\"message\": asst_doc}` (line 387) which sends the ObjectId to jsonable_encoder and fails.",
+      "evidence": "curl -X POST /api/image/generate -> HTTP/2 500, body 'Internal Server Error'. Backend log shows the traceback ending in ValueError above. The image is actually generated and stored in Mongo before the crash.",
+      "priority": "HIGH"
+    }
+  ],
+  "action_items": [
+    "Fix /api/image/generate serialization: either strip `_id` from asst_doc before returning (e.g. `asst_doc.pop('_id', None)`) or return a fresh dict of only the desired fields. Same defensive pattern should be considered anywhere `insert_one(doc)` is followed by returning `doc`.",
+    "Retest /api/image/generate after fix and verify frontend Imagine flow renders the image inline (image_data_url starts with 'data:image/')."
+  ],
+  "success_rate": {"backend": "89%", "frontend": "100%"},
+  "retest_needed": true,
+  "full_testing_deferred": true,
+  "notes": {
+    "not_tested": ["/api/voice/transcribe (skipped per instructions; mic gesture blocked in headless)", "attach-image-btn/attach-file-btn upload paths", "web-toggle-btn", "rename-btn-{id}/delete-btn-{id} UI icons (backend PATCH/DELETE covered)"]
+  }
+}
