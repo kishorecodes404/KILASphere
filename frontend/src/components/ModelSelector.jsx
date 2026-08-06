@@ -1,11 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { ChevronDown, Check, Bot, Zap } from "lucide-react";
-
-const ICONS = {
-  openai: <Bot size={14} strokeWidth={1.5} />,
-  anthropic: <Zap size={14} strokeWidth={1.5} />,
-  gemini: <Bot size={14} strokeWidth={1.5} />,
-};
+import { ChevronDown, Check, Bot } from "lucide-react";
 
 export default function ModelSelector({ models, selected, onChange }) {
   const [open, setOpen] = useState(false);
@@ -26,17 +20,21 @@ export default function ModelSelector({ models, selected, onChange }) {
       <button
         data-testid="model-selector-btn"
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#14141E] border border-white/10 hover:bg-white/[0.06] hover:text-white text-white transition-colors text-sm font-medium"
+        className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-white/15 text-white transition-colors text-sm font-medium"
       >
-        <span className="text-cyan-400">{ICONS[current?.provider] || <Bot size={14} />}</span>
+        <Bot size={14} strokeWidth={1.5} className="text-cyan-400" />
         <span>{current?.label || "Choose model"}</span>
-        <ChevronDown size={14} strokeWidth={1.5} className={open ? "rotate-180 transition-transform" : "transition-transform"} />
+        <ChevronDown
+          size={14}
+          strokeWidth={1.5}
+          className={`text-[#a1a1aa] transition-transform ${open ? "rotate-180" : ""}`}
+        />
       </button>
 
       {open && (
         <div
           data-testid="model-selector-menu"
-          className="absolute top-full mt-2 left-0 min-w-[260px] rounded-2xl border border-white/10 bg-[#0A0A10]/95 backdrop-blur-2xl shadow-2xl overflow-hidden z-50"
+          className="absolute top-full mt-2 left-0 min-w-[280px] rounded-2xl border border-white/10 bg-[#101017]/95 backdrop-blur-2xl shadow-2xl overflow-hidden z-50"
         >
           <div className="p-2">
             {models.map((m) => (
@@ -50,20 +48,22 @@ export default function ModelSelector({ models, selected, onChange }) {
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-left transition-colors ${
                   m.id === selected
                     ? "bg-cyan-400/10 text-cyan-300"
-                    : "text-[#a1a1aa] hover:bg-white/5 hover:text-white"
+                    : "text-[#ececf1] hover:bg-white/[0.06]"
                 }`}
               >
-                <span className="text-cyan-400">{ICONS[m.provider]}</span>
-                <div className="flex-1">
+                <Bot size={14} strokeWidth={1.5} className="text-cyan-400 shrink-0" />
+                <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium text-white">{m.label}</div>
-                  <div className="text-[10px] uppercase tracking-widest text-[#52525B]">
+                  <div className="text-[10px] uppercase tracking-widest text-[#71717a] mt-0.5">
                     {m.provider}
                     {m.supports_files && " · files"}
                     {m.supports_web && " · web"}
                     {m.supports_vision && " · vision"}
                   </div>
                 </div>
-                {m.id === selected && <Check size={14} strokeWidth={2} className="text-cyan-400" />}
+                {m.id === selected && (
+                  <Check size={14} strokeWidth={2.5} className="text-cyan-400" />
+                )}
               </button>
             ))}
           </div>

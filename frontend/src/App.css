@@ -1,5 +1,27 @@
-/* App-level overrides */
 .App {
   min-height: 100vh;
-  background: #05050a;
+}
+
+/* Logomark */
+.kila-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: conic-gradient(from 210deg at 50% 50%, #00e5ff 0deg, #7c3aed 140deg, #ff5f1f 250deg, #00e5ff 360deg);
+  position: relative;
+}
+.kila-mark::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 6px;
+  background: #0b0b0f;
+}
+.kila-mark::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #00e5ff, #7c3aed);
+  z-index: 1;
 }

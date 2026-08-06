@@ -1,16 +1,16 @@
 import { motion } from "framer-motion";
-import { Code2, ImageIcon, FileText, Compass, Sparkles } from "lucide-react";
+import { Code2, ImageIcon, FileText, Compass } from "lucide-react";
 
 const PROMPTS = [
   {
     icon: <Code2 size={14} strokeWidth={1.5} />,
     label: "Code",
-    text: "Write a Python function that finds the longest palindromic substring.",
+    text: "Write a Python function that finds the longest palindromic substring, with test cases.",
   },
   {
     icon: <ImageIcon size={14} strokeWidth={1.5} />,
     label: "Imagine",
-    text: "A neon-lit space station orbiting Saturn, cinematic, ultra detailed",
+    text: "A neon Tokyo alley at night, cinematic, rain-soaked reflections",
     imagine: true,
   },
   {
@@ -27,54 +27,46 @@ const PROMPTS = [
 
 export default function EmptyState({ onPick }) {
   return (
-    <div className="relative flex-1 flex flex-col items-center justify-center px-6 overflow-hidden">
-      <div className="cosmic-sphere" />
+    <div className="relative flex-1 flex flex-col items-center justify-center px-6 py-8">
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="relative z-10 text-center max-w-2xl"
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-2xl text-center"
       >
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-400/30 mb-6">
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 pulse-dot" />
-          <span className="overline text-cyan-300">Online · Universal AI</span>
-        </div>
+        <div className="mx-auto kila-mark w-14 h-14 mb-6" />
         <h1
           data-testid="empty-title"
-          className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]"
+          className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.05]"
         >
-          Welcome to <span className="text-cyan-400">KILASphere</span>
+          What can I help with?
         </h1>
-        <p className="mt-5 text-[#a1a1aa] text-base sm:text-lg leading-relaxed max-w-xl mx-auto">
-          A cosmic AI that chats, sees images, generates art, listens to your voice,
-          reads your files, and browses the web — all in one place, free.
+        <p className="mt-3 text-[#a1a1aa] text-base leading-relaxed max-w-lg mx-auto">
+          Ask anything. Chat, code, generate images, transcribe voice, read files, or search the web.
         </p>
 
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl mx-auto">
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-xl mx-auto">
           {PROMPTS.map((p, i) => (
             <motion.button
               key={i}
               data-testid={`prompt-suggestion-${i}`}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + i * 0.06 }}
+              transition={{ delay: 0.08 + i * 0.05 }}
               onClick={() => onPick(p)}
-              className="group text-left p-4 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-cyan-400/30 hover:bg-white/[0.06] transition-colors"
+              className="group text-left p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/15 hover:bg-white/[0.04] transition-colors"
             >
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-cyan-400">{p.icon}</span>
-                <span className="overline text-[#a1a1aa] group-hover:text-white">
+                <span className="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center text-cyan-400">
+                  {p.icon}
+                </span>
+                <span className="text-[11px] uppercase tracking-widest text-[#a1a1aa] font-semibold">
                   {p.label}
                 </span>
               </div>
               <div className="text-sm text-white leading-relaxed">{p.text}</div>
             </motion.button>
           ))}
-        </div>
-
-        <div className="mt-10 flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest text-[#52525B]">
-          <Sparkles size={10} strokeWidth={2} />
-          Powered by GPT · Claude · Gemini
         </div>
       </motion.div>
     </div>

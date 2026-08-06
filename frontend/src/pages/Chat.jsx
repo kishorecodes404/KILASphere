@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Menu } from "lucide-react";
+import { Menu, Settings as SettingsIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 import Sidebar from "@/components/Sidebar";
@@ -20,6 +21,7 @@ import {
 
 const LS_MODEL = "kilasphere.model";
 const LS_CONV = "kilasphere.activeConv";
+const LS_WEB = "kilasphere.web";
 
 export default function Chat() {
   const [models, setModels] = useState([]);
@@ -31,7 +33,7 @@ export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [streaming, setStreaming] = useState(false);
   const [streamId, setStreamId] = useState(null);
-  const [useWeb, setUseWeb] = useState(false);
+  const [useWeb, setUseWeb] = useState(localStorage.getItem(LS_WEB) === "true");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const scrollRef = useRef(null);
 
@@ -40,36 +42,31 @@ export default function Chat() {
     [models, modelKey]
   );
 
-  // Bootstrap
   useEffect(() => {
     (async () => {
       try {
         const [mods, convs] = await Promise.all([listModels(), listConversations()]);
         setModels(mods);
         setConversations(convs);
-        if (!activeId && convs.length > 0) {
-          setActiveId(convs[0].id);
-        }
-      } catch (e) {
+        if (!activeId && convs.length > 0) setActiveId(convs[0].id);
+      } catch {
         toast.error("Failed to load KILASphere");
       }
     })();
   }, []); // eslint-disable-line
 
-  // Persist choices
   useEffect(() => localStorage.setItem(LS_MODEL, modelKey), [modelKey]);
   useEffect(() => {
     if (activeId) localStorage.setItem(LS_CONV, activeId);
   }, [activeId]);
+  useEffect(() => localStorage.setItem(LS_WEB, useWeb ? "true" : "false"), [useWeb]);
 
-  // Sidebar responsive default
   useEffect(() => {
     if (typeof window !== "undefined" && window.innerWidth < 1024) {
       setSidebarOpen(false);
     }
   }, []);
 
-  // Load messages when conv changes
   useEffect(() => {
     if (!activeId) {
       setMessages([]);
@@ -108,6 +105,7 @@ export default function Chat() {
     setConversations((prev) => [c, ...prev]);
     setActiveId(c.id);
     setMessages([]);
+    if (window.innerWidth < 1024) setSidebarOpen(false);
   };
 
   const handleDelete = async (id) => {
@@ -121,15 +119,12 @@ export default function Chat() {
 
   const handleRename = async (id, title) => {
     await updateConversation(id, title);
-    setConversations((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, title } : c))
-    );
+    setConversations((prev) => prev.map((c) => (c.id === id ? { ...c, title } : c)));
   };
 
   const handleSend = async ({ text, images, files }) => {
     const convId = await ensureConversation();
 
-    // Optimistic user message
     const optimistic = {
       id: `tmp-${Date.now()}`,
       conversation_id: convId,
@@ -193,7 +188,6 @@ export default function Chat() {
     } finally {
       setStreaming(false);
       setStreamId(null);
-      // Refresh conversations order
       listConversations().then(setConversations).catch(() => {});
     }
   };
@@ -205,7 +199,7 @@ export default function Chat() {
       id: `tmp-${Date.now()}`,
       conversation_id: convId,
       role: "user",
-      content: `/imagine ${prompt}`,
+      content: `Imagine: ${prompt}`,
       kind: "text",
       attachments: [],
       created_at: new Date().toISOString(),
@@ -214,41 +208,38 @@ export default function Chat() {
       id: `img-${Date.now()}`,
       conversation_id: convId,
       role: "assistant",
-      content: "Generating image…",
+      content: "",
       kind: "text",
       attachments: [],
       created_at: new Date().toISOString(),
     };
     setMessages((prev) => [...prev, optimistic, placeholder]);
     setStreaming(true);
+    setStreamId(placeholder.id);
     scrollToBottom();
     try {
       const finalMsg = await generateImage(convId, prompt);
-      setMessages((prev) =>
-        prev.map((m) => (m.id === placeholder.id ? finalMsg : m))
-      );
+      setMessages((prev) => prev.map((m) => (m.id === placeholder.id ? finalMsg : m)));
       listConversations().then(setConversations).catch(() => {});
-    } catch (e) {
+    } catch {
       toast.error("Image generation failed");
       setMessages((prev) => prev.filter((m) => m.id !== placeholder.id));
     } finally {
       setStreaming(false);
+      setStreamId(null);
       scrollToBottom();
     }
   };
 
   const handlePickPrompt = (p) => {
-    if (p.imagine) {
-      handleGenerateImage(p.text);
-    } else {
-      handleSend({ text: p.text, images: [], files: [] });
-    }
+    if (p.imagine) handleGenerateImage(p.text);
+    else handleSend({ text: p.text, images: [], files: [] });
   };
 
   const showEmpty = messages.length === 0 && !streaming;
 
   return (
-    <div className="h-screen w-screen flex bg-[#05050A] text-white overflow-hidden">
+    <div className="h-screen w-screen flex bg-[#0b0b0f] text-white overflow-hidden">
       <Sidebar
         conversations={conversations}
         activeId={activeId}
@@ -265,11 +256,12 @@ export default function Chat() {
 
       <main className="flex-1 flex flex-col min-w-0 relative">
         {/* Header */}
-        <header className="sticky top-0 z-30 h-16 flex items-center gap-3 px-4 lg:px-6 bg-[#0A0A10]/80 backdrop-blur-xl border-b border-white/5">
+        <header className="sticky top-0 z-20 h-14 flex items-center gap-3 px-3 lg:px-6 bg-[#0b0b0f]/85 backdrop-blur-xl border-b border-white/5">
           <button
             data-testid="toggle-sidebar-btn"
             onClick={() => setSidebarOpen((o) => !o)}
-            className="p-2 rounded-full hover:bg-white/5 text-[#a1a1aa] hover:text-white transition-colors"
+            aria-label="Toggle sidebar"
+            className="p-2 rounded-lg hover:bg-white/5 text-[#a1a1aa] hover:text-white transition-colors"
           >
             <Menu size={16} strokeWidth={1.5} />
           </button>
@@ -277,10 +269,14 @@ export default function Chat() {
           <ModelSelector models={models} selected={modelKey} onChange={setModelKey} />
 
           <div className="ml-auto flex items-center gap-2">
-            <div className="hidden sm:flex items-center gap-1.5 overline text-[#52525B]">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot" />
-              Live
-            </div>
+            <Link
+              to="/settings"
+              data-testid="header-settings-link"
+              aria-label="Settings"
+              className="p-2 rounded-lg hover:bg-white/5 text-[#a1a1aa] hover:text-white transition-colors"
+            >
+              <SettingsIcon size={16} strokeWidth={1.5} />
+            </Link>
           </div>
         </header>
 
@@ -293,7 +289,7 @@ export default function Chat() {
           {showEmpty ? (
             <EmptyState onPick={handlePickPrompt} />
           ) : (
-            <div className="w-full max-w-3xl mx-auto px-4 lg:px-6 py-8 flex flex-col gap-8">
+            <div className="w-full max-w-3xl mx-auto px-4 lg:px-6 py-8 flex flex-col gap-7">
               {messages.map((m) => (
                 <MessageBubble
                   key={m.id}

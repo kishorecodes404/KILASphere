@@ -4,7 +4,6 @@ import {
   Paperclip,
   ImagePlus,
   Mic,
-  MicOff,
   Sparkles,
   Globe,
   X,
@@ -38,10 +37,10 @@ export default function InputDock({
     const el = textareaRef.current;
     if (!el) return;
     el.style.height = "auto";
-    el.style.height = Math.min(el.scrollHeight, 200) + "px";
+    el.style.height = Math.min(el.scrollHeight, 220) + "px";
   };
 
-  const handleSend = async () => {
+  const handleSend = () => {
     if (disabled) return;
     const trimmed = text.trim();
     if (!trimmed && images.length === 0 && files.length === 0) return;
@@ -70,8 +69,8 @@ export default function InputDock({
         try {
           const t = await transcribeAudio(blob);
           setText((prev) => (prev ? prev + " " + t : t));
-          autoGrow();
-        } catch (e) {
+          setTimeout(autoGrow, 30);
+        } catch {
           toast.error("Transcription failed");
         } finally {
           setTranscribing(false);
@@ -90,10 +89,12 @@ export default function InputDock({
     setRecording(false);
   };
 
+  const hasAttachments = images.length > 0 || files.length > 0;
+
   return (
     <div className="w-full max-w-3xl mx-auto px-4 pb-6">
       {/* Attachment previews */}
-      {(images.length > 0 || files.length > 0) && (
+      {hasAttachments && (
         <div className="flex flex-wrap gap-2 mb-2">
           {images.map((f, i) => (
             <div
@@ -108,6 +109,7 @@ export default function InputDock({
               <button
                 onClick={() => setImages(images.filter((_, j) => j !== i))}
                 className="absolute top-1 right-1 p-0.5 rounded-full bg-black/70 opacity-0 group-hover:opacity-100 hover:bg-black transition-opacity"
+                aria-label="Remove image"
               >
                 <X size={10} strokeWidth={2} className="text-white" />
               </button>
@@ -116,13 +118,14 @@ export default function InputDock({
           {files.map((f, i) => (
             <div
               key={"file" + i}
-              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#14141E] border border-white/10 text-xs text-[#a1a1aa]"
+              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.04] border border-white/10 text-xs text-[#ececf1]"
             >
-              <Paperclip size={12} strokeWidth={1.5} />
+              <Paperclip size={12} strokeWidth={1.5} className="text-cyan-400" />
               <span className="max-w-[160px] truncate">{f.name}</span>
               <button
                 onClick={() => setFiles(files.filter((_, j) => j !== i))}
-                className="hover:text-white"
+                className="text-[#a1a1aa] hover:text-white"
+                aria-label="Remove file"
               >
                 <X size={12} strokeWidth={1.5} />
               </button>
@@ -131,7 +134,13 @@ export default function InputDock({
         </div>
       )}
 
-      <div className="relative rounded-3xl bg-white/[0.03] backdrop-blur-2xl border border-white/10 focus-within:border-cyan-400/40 focus-within:shadow-[0_0_28px_rgba(0,229,255,0.15)] transition-colors">
+      <div
+        className={`relative rounded-3xl bg-[#101017] border transition-colors ${
+          imageMode
+            ? "border-orange-400/40 shadow-[0_0_28px_rgba(255,95,31,0.15)]"
+            : "border-white/10 focus-within:border-cyan-400/40 focus-within:shadow-[0_0_28px_rgba(0,229,255,0.12)]"
+        }`}
+      >
         <textarea
           ref={textareaRef}
           data-testid="chat-input"
@@ -149,11 +158,12 @@ export default function InputDock({
           placeholder={
             imageMode
               ? "Describe an image to generate..."
-              : "Ask KILASphere anything — chat, code, images, files..."
+              : "Message KILASphere…"
           }
           rows={1}
           disabled={disabled}
-          className="w-full bg-transparent border-none text-white placeholder-[#52525B] focus:outline-none resize-none min-h-[52px] max-h-[200px] py-4 px-5 pr-16 text-[0.95rem]"
+          aria-label="Message KILASphere"
+          className="w-full bg-transparent border-none text-white placeholder-[#71717a] focus:outline-none resize-none min-h-[56px] max-h-[220px] pt-4 pb-3 px-5 pr-14 text-[0.95rem]"
         />
 
         {/* Send */}
@@ -161,22 +171,24 @@ export default function InputDock({
           data-testid="send-btn"
           onClick={handleSend}
           disabled={disabled}
-          className={`absolute right-2 bottom-2 w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+          aria-label="Send message"
+          className={`absolute right-2.5 bottom-2.5 w-10 h-10 rounded-2xl flex items-center justify-center transition-all ${
             disabled
-              ? "bg-white/5 text-[#52525B]"
-              : "bg-cyan-400 text-black hover:bg-cyan-300 glow-cyan"
+              ? "bg-white/5 text-[#52525b]"
+              : "bg-white text-black hover:bg-white/90 hover:scale-[1.02]"
           }`}
         >
           <Send size={16} strokeWidth={2} />
         </button>
 
         {/* Action toolbar */}
-        <div className="flex items-center gap-1 px-3 pb-2">
+        <div className="flex items-center gap-1 px-3 pb-2.5 pt-0">
           <button
             data-testid="attach-image-btn"
             onClick={() => imageInputRef.current?.click()}
-            title="Attach image (vision)"
-            className="p-2 rounded-full text-[#a1a1aa] hover:bg-white/5 hover:text-white transition-colors"
+            title="Attach image"
+            aria-label="Attach image"
+            className="p-2 rounded-lg text-[#a1a1aa] hover:bg-white/5 hover:text-white transition-colors"
           >
             <ImagePlus size={16} strokeWidth={1.5} />
           </button>
@@ -198,8 +210,9 @@ export default function InputDock({
               <button
                 data-testid="attach-file-btn"
                 onClick={() => fileInputRef.current?.click()}
-                title="Attach file (PDF, txt, csv...)"
-                className="p-2 rounded-full text-[#a1a1aa] hover:bg-white/5 hover:text-white transition-colors"
+                title="Attach file"
+                aria-label="Attach file"
+                className="p-2 rounded-lg text-[#a1a1aa] hover:bg-white/5 hover:text-white transition-colors"
               >
                 <Paperclip size={16} strokeWidth={1.5} />
               </button>
@@ -222,16 +235,15 @@ export default function InputDock({
             data-testid="voice-btn"
             onClick={recording ? stopRecording : startRecording}
             title={recording ? "Stop recording" : "Voice input"}
-            className={`p-2 rounded-full transition-colors ${
+            aria-label="Voice input"
+            className={`p-2 rounded-lg transition-colors ${
               recording
-                ? "bg-red-500/20 text-red-400 hover:bg-red-500/30"
+                ? "bg-red-500/15 text-red-400"
                 : "text-[#a1a1aa] hover:bg-white/5 hover:text-white"
             }`}
           >
             {recording ? (
-              <Square size={14} strokeWidth={2} className="animate-pulse" />
-            ) : transcribing ? (
-              <MicOff size={16} strokeWidth={1.5} />
+              <Square size={14} strokeWidth={2.5} className="animate-pulse" />
             ) : (
               <Mic size={16} strokeWidth={1.5} />
             )}
@@ -241,7 +253,7 @@ export default function InputDock({
             data-testid="image-gen-btn"
             onClick={() => setImageMode((m) => !m)}
             title="Image generation mode"
-            className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 text-xs font-medium transition-colors ${
               imageMode
                 ? "bg-orange-500/20 text-orange-300"
                 : "text-[#a1a1aa] hover:bg-white/5 hover:text-white"
@@ -255,7 +267,7 @@ export default function InputDock({
               data-testid="web-toggle-btn"
               onClick={onToggleWeb}
               title="Web search"
-              className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 text-xs font-medium transition-colors ${
                 useWeb
                   ? "bg-cyan-400/15 text-cyan-300"
                   : "text-[#a1a1aa] hover:bg-white/5 hover:text-white"
@@ -265,10 +277,19 @@ export default function InputDock({
             </button>
           )}
 
-          <div className="ml-auto text-[10px] uppercase tracking-widest text-[#52525B]">
-            {transcribing ? "Transcribing…" : "Shift+Enter = newline"}
+          <div className="ml-auto text-[11px] text-[#71717a] hidden sm:block">
+            {transcribing ? (
+              <span className="text-cyan-300">Transcribing…</span>
+            ) : recording ? (
+              <span className="text-red-300">Recording…</span>
+            ) : (
+              <span>Shift + Enter for newline</span>
+            )}
           </div>
         </div>
+      </div>
+      <div className="text-[11px] text-[#52525b] text-center mt-2">
+        KILASphere can make mistakes. Verify important information.
       </div>
     </div>
   );
