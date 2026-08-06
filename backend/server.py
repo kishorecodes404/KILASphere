@@ -372,6 +372,7 @@ async def generate_image(payload: ImageGenRequest):
             "created_at": _now_iso(),
         }
         await db.messages.insert_one(asst_doc)
+        asst_doc.pop("_id", None)
 
         if (conv.get("title") or "New chat") == "New chat":
             new_title = payload.prompt[:60]
