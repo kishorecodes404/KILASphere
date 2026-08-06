@@ -33,7 +33,7 @@ function CodeBlock({ inline, className, children, ...props }) {
         <button
           data-testid="copy-code-btn"
           onClick={doCopy}
-          className="flex items-center gap-1.5 text-xs text-[#a1a1aa] hover:text-cyan-400 transition-colors"
+          className="flex items-center gap-1.5 text-xs text-[#a1a1aa] hover:text-violet-400 transition-colors"
         >
           {copied ? (
             <>
@@ -116,7 +116,7 @@ export default function MessageBubble({ message, streaming = false }) {
         )}
 
         {isUser ? (
-          <div className="bg-cyan-400 text-black rounded-3xl rounded-tr-md px-5 py-3 shadow-sm">
+          <div className="bg-violet-600 text-white rounded-3xl rounded-tr-md px-5 py-3 shadow-[0_0_20px_rgba(124,58,237,0.25)]">
             <div className="whitespace-pre-wrap text-[0.95rem] leading-relaxed font-medium">
               {message.content}
             </div>
@@ -135,9 +135,9 @@ export default function MessageBubble({ message, streaming = false }) {
               </>
             ) : streaming ? (
               <div className="flex items-center gap-1.5 py-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 loading-dot" />
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 loading-dot" />
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 loading-dot" />
+                <span className="w-1.5 h-1.5 rounded-full bg-violet-500 loading-dot" />
+                <span className="w-1.5 h-1.5 rounded-full bg-violet-500 loading-dot" />
+                <span className="w-1.5 h-1.5 rounded-full bg-violet-500 loading-dot" />
               </div>
             ) : null}
           </div>

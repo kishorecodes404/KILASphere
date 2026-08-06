@@ -54,7 +54,7 @@ export default function Sidebar({
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -280, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 32 }}
-            className="fixed lg:relative z-40 h-screen w-72 shrink-0 border-r border-white/5 bg-[#0b0b0f] flex flex-col"
+            className="fixed lg:relative z-40 h-screen w-72 shrink-0 border-r border-white/5 bg-[#09090B] flex flex-col"
           >
             {/* Brand */}
             <div className="p-5 flex items-center justify-between">
@@ -73,7 +73,7 @@ export default function Sidebar({
               <button
                 data-testid="new-chat-btn"
                 onClick={onCreate}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white text-black text-sm font-semibold hover:bg-white/90 transition-colors"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-violet-600 text-white text-sm font-semibold hover:bg-violet-500 transition-colors shadow-[0_0_16px_rgba(124,58,237,0.35)]"
               >
                 <Plus size={14} strokeWidth={2.5} /> New chat
               </button>
@@ -111,7 +111,7 @@ export default function Sidebar({
                       onBlur={commitEdit}
                       onKeyDown={(e) => e.key === "Enter" && commitEdit()}
                       onClick={(e) => e.stopPropagation()}
-                      className="flex-1 bg-transparent border-b border-cyan-400/40 text-sm outline-none"
+                      className="flex-1 bg-transparent border-b border-violet-500/40 text-sm outline-none"
                     />
                   ) : (
                     <span className="flex-1 text-sm truncate">{c.title}</span>

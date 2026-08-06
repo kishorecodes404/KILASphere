@@ -51,7 +51,7 @@ export default function Settings() {
 
   return (
     <div className="min-h-screen ambient-bg text-white">
-      <header className="sticky top-0 z-30 backdrop-blur-xl bg-[#0b0b0f]/70 border-b border-white/5">
+      <header className="sticky top-0 z-30 backdrop-blur-xl bg-[#09090B]/70 border-b border-white/5">
         <div className="max-w-3xl mx-auto flex items-center justify-between px-6 py-4">
           <Logo to="/" />
           <Link
@@ -66,7 +66,7 @@ export default function Settings() {
 
       <main className="max-w-3xl mx-auto px-6 py-12">
         <div className="mb-10">
-          <div className="text-xs uppercase tracking-widest text-cyan-400 mb-2">Settings</div>
+          <div className="text-xs uppercase tracking-widest text-violet-400 mb-2">Settings</div>
           <h1 className="font-display text-4xl font-bold tracking-tight">Preferences</h1>
           <p className="mt-2 text-[#a1a1aa]">Personalize how KILASphere responds.</p>
         </div>
@@ -74,7 +74,7 @@ export default function Settings() {
         {/* Section: Default model */}
         <section className="mb-8 p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
           <div className="flex items-center gap-2 mb-1">
-            <Bot size={16} strokeWidth={1.5} className="text-cyan-400" />
+            <Bot size={16} strokeWidth={1.5} className="text-violet-400" />
             <div className="text-base font-semibold">Default model</div>
           </div>
           <p className="text-sm text-[#a1a1aa] mb-5">
@@ -91,11 +91,11 @@ export default function Settings() {
                 }}
                 className={`flex items-start gap-3 p-4 rounded-xl border text-left transition-colors ${
                   defaultModel === m.id
-                    ? "border-cyan-400/40 bg-cyan-400/5"
+                    ? "border-violet-500/40 bg-violet-500/5"
                     : "border-white/10 bg-white/[0.02] hover:border-white/20"
                 }`}
               >
-                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-cyan-400">
+                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-violet-400">
                   <Bot size={14} strokeWidth={1.5} />
                 </div>
                 <div className="flex-1">
@@ -114,7 +114,7 @@ export default function Settings() {
         {/* Section: Behaviour */}
         <section className="mb-8 p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
           <div className="flex items-center gap-2 mb-1">
-            <Sparkles size={16} strokeWidth={1.5} className="text-cyan-400" />
+            <Sparkles size={16} strokeWidth={1.5} className="text-violet-400" />
             <div className="text-base font-semibold">Behaviour</div>
           </div>
           <p className="text-sm text-[#a1a1aa] mb-6">

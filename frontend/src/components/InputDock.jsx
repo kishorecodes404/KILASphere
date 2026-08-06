@@ -120,7 +120,7 @@ export default function InputDock({
               key={"file" + i}
               className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.04] border border-white/10 text-xs text-[#ececf1]"
             >
-              <Paperclip size={12} strokeWidth={1.5} className="text-cyan-400" />
+              <Paperclip size={12} strokeWidth={1.5} className="text-violet-400" />
               <span className="max-w-[160px] truncate">{f.name}</span>
               <button
                 onClick={() => setFiles(files.filter((_, j) => j !== i))}
@@ -135,10 +135,10 @@ export default function InputDock({
       )}
 
       <div
-        className={`relative rounded-3xl bg-[#101017] border transition-colors ${
+        className={`relative rounded-3xl bg-[#18181B] border transition-colors ${
           imageMode
-            ? "border-orange-400/40 shadow-[0_0_28px_rgba(255,95,31,0.15)]"
-            : "border-white/10 focus-within:border-cyan-400/40 focus-within:shadow-[0_0_28px_rgba(0,229,255,0.12)]"
+            ? "border-fuchsia-400/40 shadow-[0_0_28px_rgba(168,85,247,0.20)]"
+            : "border-white/10 focus-within:border-violet-500/50 focus-within:shadow-[0_0_28px_rgba(124,58,237,0.25)]"
         }`}
       >
         <textarea
@@ -175,7 +175,7 @@ export default function InputDock({
           className={`absolute right-2.5 bottom-2.5 w-10 h-10 rounded-2xl flex items-center justify-center transition-all ${
             disabled
               ? "bg-white/5 text-[#52525b]"
-              : "bg-white text-black hover:bg-white/90 hover:scale-[1.02]"
+              : "bg-violet-600 text-white hover:bg-violet-500 hover:scale-[1.03] shadow-[0_0_20px_rgba(124,58,237,0.45)]"
           }`}
         >
           <Send size={16} strokeWidth={2} />
@@ -255,7 +255,7 @@ export default function InputDock({
             title="Image generation mode"
             className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 text-xs font-medium transition-colors ${
               imageMode
-                ? "bg-orange-500/20 text-orange-300"
+                ? "bg-fuchsia-500/20 text-fuchsia-300"
                 : "text-[#a1a1aa] hover:bg-white/5 hover:text-white"
             }`}
           >
@@ -269,7 +269,7 @@ export default function InputDock({
               title="Web search"
               className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 text-xs font-medium transition-colors ${
                 useWeb
-                  ? "bg-cyan-400/15 text-cyan-300"
+                  ? "bg-violet-500/15 text-violet-300"
                   : "text-[#a1a1aa] hover:bg-white/5 hover:text-white"
               }`}
             >
@@ -279,7 +279,7 @@ export default function InputDock({
 
           <div className="ml-auto text-[11px] text-[#71717a] hidden sm:block">
             {transcribing ? (
-              <span className="text-cyan-300">Transcribing…</span>
+              <span className="text-violet-300">Transcribing…</span>
             ) : recording ? (
               <span className="text-red-300">Recording…</span>
             ) : (

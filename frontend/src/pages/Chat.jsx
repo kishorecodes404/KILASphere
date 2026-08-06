@@ -239,7 +239,7 @@ export default function Chat() {
   const showEmpty = messages.length === 0 && !streaming;
 
   return (
-    <div className="h-screen w-screen flex bg-[#0b0b0f] text-white overflow-hidden">
+    <div className="h-screen w-screen flex bg-[#09090B] text-white overflow-hidden">
       <Sidebar
         conversations={conversations}
         activeId={activeId}
@@ -256,7 +256,7 @@ export default function Chat() {
 
       <main className="flex-1 flex flex-col min-w-0 relative">
         {/* Header */}
-        <header className="sticky top-0 z-20 h-14 flex items-center gap-3 px-3 lg:px-6 bg-[#0b0b0f]/85 backdrop-blur-xl border-b border-white/5">
+        <header className="sticky top-0 z-20 h-14 flex items-center gap-3 px-3 lg:px-6 bg-[#09090B]/85 backdrop-blur-xl border-b border-white/5">
           <button
             data-testid="toggle-sidebar-btn"
             onClick={() => setSidebarOpen((o) => !o)}

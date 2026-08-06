@@ -57,7 +57,7 @@ export default function EmptyState({ onPick }) {
               className="group text-left p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/15 hover:bg-white/[0.04] transition-colors"
             >
               <div className="flex items-center gap-2 mb-2">
-                <span className="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center text-cyan-400">
+                <span className="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center text-violet-400">
                   {p.icon}
                 </span>
                 <span className="text-[11px] uppercase tracking-widest text-[#a1a1aa] font-semibold">

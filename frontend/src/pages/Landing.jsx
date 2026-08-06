@@ -51,7 +51,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen ambient-bg text-white">
       {/* Nav */}
-      <header className="sticky top-0 z-30 backdrop-blur-xl bg-[#0b0b0f]/70 border-b border-white/5">
+      <header className="sticky top-0 z-30 backdrop-blur-xl bg-[#09090B]/70 border-b border-white/5">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
           <Logo to="/" />
           <nav className="hidden md:flex items-center gap-8 text-sm text-[#a1a1aa]">
@@ -62,7 +62,7 @@ export default function Landing() {
           <Link
             to="/chat"
             data-testid="nav-launch-btn"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-black text-sm font-medium hover:bg-white/90 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-violet-600 text-white text-sm font-medium hover:bg-violet-500 transition-colors shadow-[0_0_16px_rgba(124,58,237,0.35)]"
           >
             Launch app <ArrowRight size={14} strokeWidth={2} />
           </Link>
@@ -79,13 +79,13 @@ export default function Landing() {
             transition={{ duration: 0.5 }}
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-xs text-[#a1a1aa] mb-6">
-              <Sparkles size={12} strokeWidth={2} className="text-cyan-400" />
+              <Sparkles size={12} strokeWidth={2} className="text-violet-400" />
               A premium AI, made free
             </div>
             <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tight leading-[1.02]">
               One AI.
               <br />
-              <span className="bg-gradient-to-r from-cyan-300 via-white to-purple-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-violet-300 via-white to-purple-400 bg-clip-text text-transparent">
                 Every capability.
               </span>
             </h1>
@@ -98,7 +98,7 @@ export default function Landing() {
               <Link
                 to="/chat"
                 data-testid="hero-cta-btn"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-cyan-400 text-black font-semibold hover:bg-cyan-300 transition-colors shadow-[0_0_40px_rgba(0,229,255,0.25)]"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-violet-500 text-black font-semibold hover:bg-violet-400 transition-colors shadow-[0_0_40px_rgba(0,229,255,0.25)]"
               >
                 Start chatting free <ArrowRight size={16} strokeWidth={2} />
               </Link>
@@ -110,9 +110,9 @@ export default function Landing() {
               </a>
             </div>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-[#71717a]">
-              <span className="flex items-center gap-1.5"><Check size={12} className="text-cyan-400" /> No signup</span>
-              <span className="flex items-center gap-1.5"><Check size={12} className="text-cyan-400" /> No API keys</span>
-              <span className="flex items-center gap-1.5"><Check size={12} className="text-cyan-400" /> All features unlocked</span>
+              <span className="flex items-center gap-1.5"><Check size={12} className="text-violet-400" /> No signup</span>
+              <span className="flex items-center gap-1.5"><Check size={12} className="text-violet-400" /> No API keys</span>
+              <span className="flex items-center gap-1.5"><Check size={12} className="text-violet-400" /> All features unlocked</span>
             </div>
           </motion.div>
         </div>
@@ -124,7 +124,7 @@ export default function Landing() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="rounded-2xl border border-white/10 bg-[#101017]/80 backdrop-blur-xl overflow-hidden shadow-2xl"
+            className="rounded-2xl border border-white/10 bg-[#18181B]/80 backdrop-blur-xl overflow-hidden shadow-2xl"
           >
             <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5">
               <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
@@ -140,14 +140,14 @@ export default function Landing() {
                 </div>
               </div>
               <div className="flex items-start gap-3 justify-end">
-                <div className="rounded-2xl bg-cyan-400 text-black px-4 py-3 text-sm font-medium">
+                <div className="rounded-2xl bg-violet-500 text-black px-4 py-3 text-sm font-medium">
                   Generate: a neon Tokyo alley at night, cinematic
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <div className="kila-mark w-7 h-7 shrink-0 mt-1" />
                 <div className="flex flex-col gap-2">
-                  <div className="w-64 h-40 rounded-xl bg-gradient-to-br from-fuchsia-500/40 via-cyan-400/30 to-orange-400/40 border border-white/10" />
+                  <div className="w-64 h-40 rounded-xl bg-gradient-to-br from-fuchsia-500/30 via-violet-500/30 to-purple-600/40 border border-white/10" />
                   <div className="text-xs text-[#71717a]">Generated with Gemini Nano Banana · 9s</div>
                 </div>
               </div>
@@ -160,7 +160,7 @@ export default function Landing() {
       <section id="features" className="py-24 border-t border-white/5">
         <div className="max-w-6xl mx-auto px-6">
           <div className="max-w-2xl mb-14">
-            <div className="text-xs uppercase tracking-widest text-cyan-400 mb-3">Capabilities</div>
+            <div className="text-xs uppercase tracking-widest text-violet-400 mb-3">Capabilities</div>
             <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight">
               Everything you'd expect.
               <br />
@@ -177,7 +177,7 @@ export default function Landing() {
                 transition={{ delay: i * 0.05 }}
                 className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/10 transition-colors"
               >
-                <div className="w-10 h-10 rounded-xl bg-cyan-400/10 text-cyan-400 flex items-center justify-center mb-4">
+                <div className="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-400 flex items-center justify-center mb-4">
                   {f.icon}
                 </div>
                 <div className="text-base font-semibold text-white mb-1.5">{f.title}</div>
@@ -193,7 +193,7 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <div>
-              <div className="text-xs uppercase tracking-widest text-cyan-400 mb-3">Frontier models</div>
+              <div className="text-xs uppercase tracking-widest text-violet-400 mb-3">Frontier models</div>
               <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight leading-tight">
                 Powered by the best. Chosen by you.
               </h2>
@@ -221,7 +221,7 @@ export default function Landing() {
                   className="flex items-center justify-between px-5 py-4 rounded-2xl bg-white/[0.02] border border-white/5"
                 >
                   <div className="flex items-center gap-3">
-                    <Zap size={16} strokeWidth={1.5} className="text-cyan-400" />
+                    <Zap size={16} strokeWidth={1.5} className="text-violet-400" />
                     <div>
                       <div className="text-sm font-medium text-white">{m.name}</div>
                       <div className="text-xs text-[#71717a]">{m.vendor}</div>
@@ -247,7 +247,7 @@ export default function Landing() {
           <Link
             to="/chat"
             data-testid="footer-cta-btn"
-            className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-cyan-400 text-black font-semibold hover:bg-cyan-300 transition-colors"
+            className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-violet-500 text-black font-semibold hover:bg-violet-400 transition-colors"
           >
             Launch KILASphere <ArrowRight size={16} strokeWidth={2} />
           </Link>

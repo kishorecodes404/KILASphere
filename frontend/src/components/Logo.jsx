@@ -12,7 +12,7 @@ export default function Logo({ to = "/", size = "md", showText = true }) {
       <div className={`kila-mark ${s.mark}`} />
       {showText && (
         <div className={`font-display font-semibold ${s.text} tracking-tight`}>
-          KILA<span className="text-cyan-400">Sphere</span>
+          KILA<span className="text-violet-400">Sphere</span>
         </div>
       )}
     </div>

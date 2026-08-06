@@ -22,7 +22,7 @@ export default function ModelSelector({ models, selected, onChange }) {
         onClick={() => setOpen((o) => !o)}
         className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-white/15 text-white transition-colors text-sm font-medium"
       >
-        <Bot size={14} strokeWidth={1.5} className="text-cyan-400" />
+        <Bot size={14} strokeWidth={1.5} className="text-violet-400" />
         <span>{current?.label || "Choose model"}</span>
         <ChevronDown
           size={14}
@@ -34,7 +34,7 @@ export default function ModelSelector({ models, selected, onChange }) {
       {open && (
         <div
           data-testid="model-selector-menu"
-          className="absolute top-full mt-2 left-0 min-w-[280px] rounded-2xl border border-white/10 bg-[#101017]/95 backdrop-blur-2xl shadow-2xl overflow-hidden z-50"
+          className="absolute top-full mt-2 left-0 min-w-[280px] rounded-2xl border border-white/10 bg-[#18181B]/95 backdrop-blur-2xl shadow-2xl overflow-hidden z-50"
         >
           <div className="p-2">
             {models.map((m) => (
@@ -47,11 +47,11 @@ export default function ModelSelector({ models, selected, onChange }) {
                 }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-left transition-colors ${
                   m.id === selected
-                    ? "bg-cyan-400/10 text-cyan-300"
+                    ? "bg-violet-500/10 text-violet-300"
                     : "text-[#ececf1] hover:bg-white/[0.06]"
                 }`}
               >
-                <Bot size={14} strokeWidth={1.5} className="text-cyan-400 shrink-0" />
+                <Bot size={14} strokeWidth={1.5} className="text-violet-400 shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium text-white">{m.label}</div>
                   <div className="text-[10px] uppercase tracking-widest text-[#71717a] mt-0.5">
@@ -62,7 +62,7 @@ export default function ModelSelector({ models, selected, onChange }) {
                   </div>
                 </div>
                 {m.id === selected && (
-                  <Check size={14} strokeWidth={2.5} className="text-cyan-400" />
+                  <Check size={14} strokeWidth={2.5} className="text-violet-400" />
                 )}
               </button>
             ))}
