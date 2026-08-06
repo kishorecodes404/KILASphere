@@ -104,7 +104,7 @@ This project is licensed under the MIT License.
 **Kishore M S**
 
 - GitHub: https://github.com/kishorecodes404
-- LinkedIn: linkedin.com/in/kishorems2007
+- LinkedIn: https://linkedin.com/in/kishorems2007
 
 ---
 
