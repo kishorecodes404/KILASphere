@@ -80,7 +80,11 @@ npm run dev
 - Dark/Light theme
 - Multi-language support
 
----
+- ## 🌐 Live Demo
+
+Try KILASphere here:
+
+https://omnimind-bot-1.emergent.host/?utm_source=share
 
 ## 🤝 Contributing
 
