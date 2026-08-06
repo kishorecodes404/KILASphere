@@ -60,6 +60,30 @@ MODEL_REGISTRY = {
 }
 DEFAULT_MODEL = "gpt-5.6-terra"
 IMAGE_GEN_MODEL = "gemini-3.1-flash-image-preview"
+IMAGE_PROMPT_EXPANDER_MODEL = ("openai", "gpt-5.6-luna")
+
+IMAGE_EXPANDER_SYSTEM = """You are a professional image-prompt engineer for a high-end text-to-image model.
+
+Transform every image request into a single detailed prompt optimized for high-quality image generation.
+Include, where sensible:
+- Subject
+- Environment
+- Camera angle
+- Lighting
+- Composition
+- Color palette
+- Art style or realism level
+- Lens type (if photorealistic)
+- Mood
+- Ultra-high detail
+- Sharp focus
+- Professional quality
+
+Rules:
+- Never change the user's intent — only enhance the description.
+- Never ask questions. Never add commentary.
+- Output ONE paragraph, no bullet points, no headings, no quotes, no prefix like "Prompt:".
+- Keep it under 120 words."""
 
 SYSTEM_PROMPT = """You are KILASphere, a premium AI assistant built to help users think, create, learn, research, and solve problems efficiently.
 
@@ -388,6 +412,27 @@ async def chat_stream(
 
 
 # ---- Image generation ----------------------------------------------------
+async def _expand_image_prompt(raw_prompt: str) -> str:
+    """Expand a short user request into a rich, cinematic image-gen prompt."""
+    try:
+        provider, model = IMAGE_PROMPT_EXPANDER_MODEL
+        expander = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"imgexp-{uuid.uuid4()}",
+            system_message=IMAGE_EXPANDER_SYSTEM,
+        ).with_model(provider, model)
+        result = await expander.send_message(UserMessage(text=raw_prompt))
+        expanded = (result or "").strip().strip('"').strip("'")
+        # Strip any accidental prefix
+        for prefix in ("Prompt:", "prompt:", "PROMPT:"):
+            if expanded.startswith(prefix):
+                expanded = expanded[len(prefix):].strip()
+        return expanded or raw_prompt
+    except Exception as e:
+        logger.warning("prompt expansion failed, using raw: %s", e)
+        return raw_prompt
+
+
 class ImageGenRequest(BaseModel):
     conversation_id: str
     prompt: str
@@ -413,6 +458,10 @@ async def generate_image(payload: ImageGenRequest):
     await db.messages.insert_one(user_doc)
 
     try:
+        # 1. Expand the raw prompt into a rich, cinematic prompt
+        expanded_prompt = await _expand_image_prompt(payload.prompt)
+
+        # 2. Generate image with Nano Banana using the expanded prompt
         chat = LlmChat(
             api_key=EMERGENT_LLM_KEY,
             session_id=f"imggen-{uuid.uuid4()}",
@@ -420,7 +469,7 @@ async def generate_image(payload: ImageGenRequest):
         ).with_model("gemini", IMAGE_GEN_MODEL).with_params(modalities=["image", "text"])
 
         text, images = await chat.send_message_multimodal_response(
-            UserMessage(text=payload.prompt)
+            UserMessage(text=expanded_prompt)
         )
 
         if not images:
@@ -433,7 +482,7 @@ async def generate_image(payload: ImageGenRequest):
             "id": asst_id,
             "conversation_id": payload.conversation_id,
             "role": "assistant",
-            "content": text or f"Generated: {payload.prompt}",
+            "content": f"**Prompt used:** _{expanded_prompt}_",
             "kind": "image",
             "image_data_url": data_url,
             "attachments": [],
