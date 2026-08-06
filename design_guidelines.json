@@ -1,0 +1,106 @@
+{
+  "theme": "dark",
+  "archetype": "Electric & Neon (High-End Awwwards Dark Mode) mixed with Luxury deep space",
+  "colors": {
+    "background_void": "#05050A",
+    "surface_base": "#0A0A10",
+    "surface_elevated": "#14141E",
+    "surface_glass": "rgba(255, 255, 255, 0.03)",
+    "text_primary": "#F8F9FA",
+    "text_secondary": "#A1A1AA",
+    "text_muted": "#52525B",
+    "accent_cyan": "#00E5FF",
+    "accent_orange": "#FF5F1F",
+    "border_subtle": "rgba(255, 255, 255, 0.08)",
+    "border_focus": "rgba(0, 229, 255, 0.3)"
+  },
+  "typography": {
+    "headings": {
+      "family": "'Unbounded', sans-serif",
+      "weights": ["300", "400", "700", "900"],
+      "import_url": "https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700;900&display=swap"
+    },
+    "body": {
+      "family": "'Manrope', sans-serif",
+      "weights": ["400", "500", "600"],
+      "import_url": "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap"
+    },
+    "code": {
+      "family": "'JetBrains Mono', monospace",
+      "weights": ["400"],
+      "import_url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap"
+    },
+    "hierarchy_rules": "Use tight letter spacing (tracking-tight) for headings. H1 max text-5xl md:text-6xl. Labels and overlines MUST be uppercase with tracking-[0.2em] and text-xs."
+  },
+  "spacing_and_layout": {
+    "global_structure": "Full-screen fixed layout (h-screen, overflow-hidden) with a collapsible or fixed left sidebar and a main chat area.",
+    "sidebar": "Width 280px or 320px (w-72/w-80), bg-[#05050A], border-r border_subtle. Must include New Chat button, History list, and user settings at bottom.",
+    "header": "Height 64px (h-16), sticky top-0, z-50. bg-[#0A0A10]/80 with backdrop-blur-xl and border-b border_subtle. Contains the Model Selector pill.",
+    "chat_area": "flex-1 overflow-y-auto scroll-smooth. Apply generous padding (p-4 md:p-8).",
+    "input_dock": "Floating container anchored at bottom (mb-6). Max-width 800px, mx-auto. Glassmorphism panel with rounded-3xl, bg_surface_glass + backdrop-blur-2xl + 1px border_subtle.",
+    "messages": "User messages: Right-aligned, max-w-[70%], bg-[#14141E] rounded-2xl rounded-tr-sm px-5 py-3. AI messages: Left-aligned, no distinct background, but formatted cleanly with an AI avatar icon on the left.",
+    "spacing_scale": "Use generous spacing. gap-8 between messages, p-6 or p-8 inside containers."
+  },
+  "visual_enhancers": {
+    "glassmorphism": "MUST use backdrop-blur-xl or backdrop-blur-2xl with a 1px inner stroke (border-white/10). Apply to header, input dock, and floating dropdowns.",
+    "shadows_and_glows": "Hover states on primary buttons should emit a soft cyan glow: shadow-[0_0_15px_rgba(0,229,255,0.3)].",
+    "borders": "Never use pure white/black borders. Use border-white/5 to border-white/10 for subtle separation.",
+    "empty_state_hero": "Centralized welcoming text with the iridescent 3D sphere image in the background with mix-blend-screen and opacity-30 to create a cosmic, deep space feel."
+  },
+  "components": {
+    "icons": {
+      "library": "lucide-react",
+      "instruction": "Use thin stroke icons (strokeWidth={1.5})."
+    },
+    "buttons": {
+      "primary": "bg-transparent border border-accent_cyan text-accent_cyan hover:bg-accent_cyan hover:text-[#05050A] transition-all duration-300 rounded-full px-6 py-2 uppercase text-xs tracking-widest font-bold",
+      "secondary": "bg-white/5 hover:bg-white/10 text-white rounded-full transition-colors",
+      "icon": "p-2 rounded-full hover:bg-white/10 text-text_secondary hover:text-white transition-colors"
+    },
+    "input_textarea": {
+      "style": "bg-transparent border-none text-white focus:ring-0 resize-none min-h-[44px] max-h-[200px] py-3 px-4 w-full placeholder-text_muted"
+    },
+    "model_selector": {
+      "style": "Glass pill dropdown in header. bg-[#14141E] border border-white/10 rounded-full px-4 py-2 flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-colors text-sm font-medium"
+    },
+    "markdown_rendering": {
+      "instruction": "Use react-markdown, remark-gfm. For code blocks, use react-syntax-highlighter with a dark theme (e.g., vscDarkPlus). Add a 'Copy Code' button to the top right of all code blocks. Code blocks should have bg-[#0A0A10] and border border-white/10 rounded-xl."
+    }
+  },
+  "animations": {
+    "micro_interactions": "All hover states must transition smoothly (duration-200 or 300).",
+    "message_entrance": "Framer motion staggered entrance for chat messages (initial={{ opacity: 0, y: 10 }}, animate={{ opacity: 1, y: 0 }}).",
+    "typing_indicator": "A small pulsing cyan dot or a glowing skeleton text effect to indicate AI is generating.",
+    "input_focus": "When the user focuses the textarea, the input dock border should transition to border-accent_cyan/30 and gain a subtle glow."
+  },
+  "image_urls": {
+    "empty_state_background": {
+      "url": "https://images.pexels.com/photos/6687532/pexels-photo-6687532.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "A vibrant, abstract CGI iridescent sphere.",
+      "usage": "Use as a large, centered background image in the chat area when there are no messages, with low opacity (e.g., opacity-20) and mix-blend-screen to create a Godly, cosmic backdrop."
+    }
+  },
+  "instructions_to_main_agent": [
+    "Build a SaaS AI Chatbot named 'KILASphere' with a deep space, high-end Awwwards-style dark mode aesthetic.",
+    "Implement a collapsible multi-conversation sidebar on the left.",
+    "Implement the main chat area with a sticky header containing a Model Selector dropdown (GPT 5.6 Terra, Claude Sonnet 5, Gemini 3.1 Pro).",
+    "Implement an advanced floating chat input dock at the bottom with buttons for Image Upload (paperclip/image icon), Voice Input (mic icon), and Send.",
+    "Add 'data-testid' to all interactive elements (buttons, inputs, chat bubbles).",
+    "Use Framer Motion for smooth message entrances and layout transitions.",
+    "Support Markdown rendering and Code syntax highlighting for AI messages.",
+    "Ensure the empty state has a prominent, welcoming hero section using the provided sphere image as a background texture and prompt suggestions.",
+    "Ensure the design uses the specified fonts (Unbounded for headings, Manrope for body, JetBrains Mono for code). Inject the font imports in the global CSS.",
+    "For the image generation feature mockup, simply render a placeholder generated image (using a generated image layout) if the user asks for an image."
+  ],
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
+    "DO NOT use complete `transparent` background in header, overlays, any surface that has content under it. Example: Dropdown with transparent background.",
+    "Use sonner for toasts. They are located in /app/frontend/src/components/ui/sonner.js",
+    "You MUST NOT apply universal transition. Eg: `transition: all`. Always add transitions for specific interactive elements like button, input excluding transforms.",
+    "You MUST NOT center align the app container, ie do not add `.App { text-align: center; }` in the css file.",
+    "Never use generic purple gradients or the default ChatGPT aesthetic. Stick to the deep void and cyan/orange accents provided.",
+    "All interactive elements must include a data-testid attribute.",
+    "Always explicitly set text color on hover. Example: hover:bg-white/10 hover:text-white.",
+    "Use 2-3x more spacing than feels comfortable. Cramped designs look cheap.",
+    "Create depth through layered design elements with z-index hierarchy and glass-morphism effects with backdrop filters."
+  ]
+}
